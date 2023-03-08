@@ -1,5 +1,6 @@
 import { Express, Request, Response, Router } from "express";
 import commonRes from "../utils/commonRes";
+import slientHandle from "../utils/silentHandle";
 
 // 配置路由接口
 interface RouterConfig {
@@ -11,11 +12,22 @@ interface RouterConfig {
 // 路由配置
 let routerConfig: Array<RouterConfig> = [];
 
+// 测试静态错误捕捉的函数
+const getInfo = function () {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      Math.random() > 0.5 ? resolve("info...") : reject("error...");
+    }, 500);
+  });
+};
+
 // 设置目录基础路由
 const routes = (app: Express) => {
   // 根目录
-  app.get("/", (req: Request, res: Response) => {
-    commonRes(res, { word: "hello world" });
+  app.get("/", async (req: Request, res: Response) => {
+    const [e, result] = await slientHandle(getInfo);
+    e ? commonRes.error(res, null) : commonRes(res, { result });
+    // commonRes(res, { word: "hello world" });
   });
 
   // 其他路由注入
