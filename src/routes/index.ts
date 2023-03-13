@@ -1,6 +1,7 @@
 import { Express, Request, Response, Router } from "express";
 import commonRes from "../utils/commonRes";
 import slientHandle from "../utils/silentHandle";
+import User from './user.routes'
 
 // 配置路由接口
 interface RouterConfig {
@@ -10,7 +11,12 @@ interface RouterConfig {
 }
 
 // 路由配置
-let routerConfig: Array<RouterConfig> = [];
+let routerConfig: Array<RouterConfig> = [
+  {
+    path:'/user',
+    router: User
+  }
+];
 
 // 测试静态错误捕捉的函数
 const getInfo = function () {
